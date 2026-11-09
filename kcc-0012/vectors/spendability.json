@@ -1,0 +1,48 @@
+{
+  "kcc": 12,
+  "section": "7.7 Signature scripts",
+  "description": "Spendability follows a key of an authorized account. The address need not be disclosed. kaspa_signMessage still requires a disclosed address. A script that needs another party's key is outside the balance set and remains spendable for a partial signature.",
+  "cases": [
+    {
+      "name": "disclosed-key",
+      "authorizedAccount": true,
+      "disclosed": true,
+      "alone": true,
+      "spendable": true,
+      "inBalanceSet": true,
+      "signMessage": true
+    },
+    {
+      "name": "undisclosed-key-of-authorized-account",
+      "authorizedAccount": true,
+      "disclosed": false,
+      "alone": true,
+      "spendable": true,
+      "inBalanceSet": true,
+      "signMessage": false,
+      "signMessageCode": 4100
+    },
+    {
+      "name": "account-the-user-did-not-authorize",
+      "authorizedAccount": false,
+      "disclosed": false,
+      "alone": true,
+      "spendable": false,
+      "code": 4100,
+      "inBalanceSet": false,
+      "signMessage": false,
+      "signMessageCode": 4100
+    },
+    {
+      "name": "needs-another-party",
+      "authorizedAccount": true,
+      "disclosed": true,
+      "alone": false,
+      "spendable": true,
+      "signTransactionCode": -32000,
+      "signInputs": true,
+      "inBalanceSet": false,
+      "signMessage": true
+    }
+  ]
+}

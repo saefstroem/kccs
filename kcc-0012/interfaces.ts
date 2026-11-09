@@ -22,6 +22,44 @@ export type TransactionId = Hex;
 export type Uint64 = string;
 /** A Uint64 counting sompi. */
 export type Amount = Uint64;
+
+/**
+ * One token total in kaspa_getBalance (Section 6.14).
+ * `amount` is the token amount, not sompi.
+ */
+export interface TokenBalance {
+  /** 32-byte covenant id, 64 hex characters. Producers emit lowercase. */
+  readonly covenantId: Hex;
+  /** 32-byte extension commitment, 64 hex characters, when the state has one. */
+  readonly commitment?: Hex;
+  readonly amount: Amount;
+}
+
+/**
+ * Balance of the account that contains the active disclosed address.
+ * `tokens` is omitted when the wallet does not report token totals.
+ */
+export interface AccountBalance {
+  readonly kas: Amount;
+  readonly tokens?: readonly TokenBalance[];
+}
+
+/** One output in the balance set, as kaspa_getNotes returns it (Section 6.15). */
+export interface Note {
+  readonly transactionId: TransactionId;
+  readonly index: number;
+  readonly amount: Amount;
+  readonly address?: Address;
+  readonly scriptPublicKey: Hex;
+  readonly covenantId?: Hex;
+  readonly commitment?: Hex;
+  /** KCC-20 KCC20State.amount when the wallet decoded that state. Not sompi. */
+  readonly tokenAmount?: Uint64;
+  /** Decoded covenant state. For KCC-20, EncodeState of that KCC20State. */
+  readonly state?: Hex;
+  /** P2SH redeem script, when the wallet can reconstruct it. */
+  readonly redeemScript?: Hex;
+}
 /** Prefixed Kaspa address, e.g. "kaspa:qp...". */
 export type Address = string;
 /** JSON text in the Kaspa WASM SDK "safe" schema (Transaction.serializeToSafeJSON). */
@@ -256,9 +294,17 @@ export interface SwitchNetworkParams {
 
 /** params and result of every method, keyed by method name. */
 export interface KaspaRpcSchema {
+  /** Disclosed addresses, active disclosed address first (Section 1, Section 6.1). */
   kaspa_requestAccounts: { params: []; result: Address[] };
+  /** The same disclosed addresses, or [] when locked or unauthorized (Section 6.2). */
   kaspa_accounts: { params: []; result: Address[] };
   kaspa_networkId: { params: []; result: NetworkId };
+  /** Accepted balance of the active account. Optional. No prompt (Section 6.14). */
+  kaspa_getBalance: { params: []; result: AccountBalance };
+  /** Notes of that account. Optional. Permission kaspa_getNotes (Section 6.15). */
+  kaspa_getNotes: { params: []; result: Note[] };
+  /** One receive address of that account, then disclosed (Section 6.16). */
+  kaspa_requestReceiveAddress: { params: []; result: Address };
   kaspa_signMessage: { params: [message: string, address: Address]; result: Hex };
   kaspa_sendTransaction: { params: [SendTransactionParams]; result: TransactionId };
   kaspa_signTransaction: { params: [SignTransactionParams]; result: SerializedTransaction };

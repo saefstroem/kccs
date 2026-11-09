@@ -1,0 +1,226 @@
+{
+  "kcc": 12,
+  "section": "6.15 kaspa_getNotes, 6.16 kaspa_requestReceiveAddress",
+  "description": "kaspa_getNotes returns the balance set of the account that contains the active disclosed address, ordered by transaction id then index. The sum of amount equals kas from the same view. The call does not change the disclosed addresses. The first call by an authorized origin prompts and grants the kaspa_getNotes permission. A later call does not prompt until that permission is revoked. When the wallet decoded a KCC-20 state, the note includes tokenAmount (KCC20State.amount) and state (EncodeState). When the output is P2SH and the wallet can reconstruct the redeem script, the note includes redeemScript. Those fields are public data and must not carry a private key, an extended key, or a path. kaspa_requestReceiveAddress returns one receive address of that account and appends it if it was not disclosed, without moving the first element.",
+  "notes": {
+    "accept": [
+      [],
+      [
+        {
+          "transactionId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "index": 0,
+          "amount": "1000",
+          "address": "kaspa:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0ju6q2fjpa",
+          "scriptPublicKey": "000020f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9ac"
+        },
+        {
+          "transactionId": "3333333333333333333333333333333333333333333333333333333333333333",
+          "index": 1,
+          "amount": "1500",
+          "scriptPublicKey": "0000aa20ce57216285125006ec18197bd8184221cefa559bb0798410d99a5bba5b07cd1d87",
+          "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "commitment": "0000000000000000000000000000000000000000000000000000000000000000",
+          "tokenAmount": "14",
+          "state": "080e0000000000000020111111111111111111111111111111111111111111111111111111111111111101000100200000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000",
+          "redeemScript": "51"
+        }
+      ],
+      [
+        {
+          "transactionId": "2222222222222222222222222222222222222222222222222222222222222222",
+          "index": 0,
+          "amount": "500",
+          "scriptPublicKey": "0000aa20ce57216285125006ec18197bd8184221cefa559bb0798410d99a5bba5b07cd1d87",
+          "covenantId": "1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ]
+    ],
+    "mustNotReturn": [
+      [
+        {
+          "transactionId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "index": 0,
+          "amount": 1000,
+          "scriptPublicKey": "000020f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9ac"
+        }
+      ],
+      [
+        {
+          "transactionId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "index": 0,
+          "amount": "1000",
+          "scriptPublicKey": "000020f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9ac",
+          "path": "m/44'/111111'/0'/0/1"
+        }
+      ],
+      [
+        {
+          "transactionId": "3333333333333333333333333333333333333333333333333333333333333333",
+          "index": 1,
+          "amount": "1500",
+          "scriptPublicKey": "0000aa20ce57216285125006ec18197bd8184221cefa559bb0798410d99a5bba5b07cd1d87",
+          "tokenAmount": 14,
+          "state": "080e",
+          "redeemScript": "51"
+        }
+      ],
+      [
+        {
+          "transactionId": "3333333333333333333333333333333333333333333333333333333333333333",
+          "index": 1,
+          "amount": "1500",
+          "scriptPublicKey": "0000aa20ce57216285125006ec18197bd8184221cefa559bb0798410d99a5bba5b07cd1d87",
+          "tokenAmount": "01",
+          "state": "080e00000000000000",
+          "redeemScript": "51"
+        }
+      ],
+      [
+        {
+          "transactionId": "3333333333333333333333333333333333333333333333333333333333333333",
+          "index": 1,
+          "amount": "1500",
+          "scriptPublicKey": "0000aa20ce57216285125006ec18197bd8184221cefa559bb0798410d99a5bba5b07cd1d87",
+          "tokenAmount": "14",
+          "state": "080e00000000000000",
+          "redeemScript": "51",
+          "privateKey": "0000000000000000000000000000000000000000000000000000000000000001"
+        }
+      ],
+      [
+        {
+          "transactionId": "3333333333333333333333333333333333333333333333333333333333333333",
+          "index": 1,
+          "amount": "1500",
+          "scriptPublicKey": "0000aa20ce57216285125006ec18197bd8184221cefa559bb0798410d99a5bba5b07cd1d87",
+          "tokenAmount": "14",
+          "state": "080e00000000000000",
+          "redeemScript": "51",
+          "xpub": "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8"
+        }
+      ]
+    ],
+    "decoded": [
+      {
+        "name": "kcc20-p2sh",
+        "decodedKcc20": true,
+        "p2sh": true,
+        "canReconstruct": true,
+        "includes": ["tokenAmount", "state", "redeemScript"],
+        "publicDataOnly": true
+      },
+      {
+        "name": "decoded-redeem-unknown",
+        "decodedKcc20": true,
+        "p2sh": true,
+        "canReconstruct": false,
+        "includes": ["tokenAmount", "state"],
+        "omits": ["redeemScript"]
+      },
+      {
+        "name": "covenant-id-only",
+        "decodedKcc20": false,
+        "p2sh": true,
+        "canReconstruct": false,
+        "omits": ["tokenAmount", "state", "redeemScript"]
+      },
+      {
+        "name": "plain-kas",
+        "decodedKcc20": false,
+        "p2sh": false,
+        "canReconstruct": false,
+        "omits": ["tokenAmount", "state", "redeemScript"]
+      }
+    ],
+    "sameView": {
+      "kas": "2500",
+      "sumOfAmount": "2500"
+    }
+  },
+  "permission": {
+    "description": "The grant is per origin. It lasts until wallet_revokePermissions names kaspa_getNotes. An unauthorized origin is 4100 with no prompt.",
+    "cases": [
+      {
+        "name": "unauthorized",
+        "holdsAccounts": false,
+        "holdsGetNotes": false,
+        "prompts": false,
+        "code": 4100
+      },
+      {
+        "name": "first-call",
+        "holdsAccounts": true,
+        "holdsGetNotes": false,
+        "prompts": true,
+        "promptIncludesUndisclosedAddresses": true,
+        "onApprove": { "holdsGetNotes": true },
+        "onDecline": { "code": 4001, "holdsGetNotes": false }
+      },
+      {
+        "name": "later-call",
+        "holdsAccounts": true,
+        "holdsGetNotes": true,
+        "prompts": false
+      },
+      {
+        "name": "revoked",
+        "holdsAccounts": true,
+        "holdsGetNotes": false,
+        "revoked": "kaspa_getNotes",
+        "prompts": true
+      },
+      {
+        "name": "request-permissions",
+        "method": "wallet_requestPermissions",
+        "names": ["kaspa_getNotes"],
+        "holdsAccounts": true,
+        "holdsGetNotes": false,
+        "prompts": true,
+        "onApprove": { "holdsGetNotes": true, "nextGetNotesPrompts": false }
+      },
+      {
+        "name": "notes-without-accounts",
+        "method": "wallet_requestPermissions",
+        "names": ["kaspa_getNotes"],
+        "holdsAccounts": false,
+        "prompts": false,
+        "code": 4100
+      },
+      {
+        "name": "unimplemented",
+        "implemented": false,
+        "prompts": false,
+        "code": 4200
+      }
+    ]
+  },
+  "requestReceiveAddress": {
+    "description": "Address strings in these cases are labels, not encoded addresses. active is the active disclosed address and stays first.",
+    "cases": [
+      {
+        "name": "new-receive-address",
+        "accountsBefore": ["active"],
+        "result": "receive",
+        "accountsAfter": ["active", "receive"],
+        "accountsChanged": true,
+        "activeUnchanged": true
+      },
+      {
+        "name": "already-disclosed",
+        "accountsBefore": ["active"],
+        "result": "active",
+        "accountsAfter": ["active"],
+        "accountsChanged": false,
+        "activeUnchanged": true
+      },
+      {
+        "name": "one-address-account",
+        "accountAddresses": ["only"],
+        "result": "only",
+        "accountsAfter": ["only"],
+        "accountsChanged": false,
+        "activeUnchanged": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "kcc": 12,
+  "section": "6.5 kaspa_sendTransaction",
+  "description": "When from is absent, selection may use any output in the selectable set of the account that contains the active disclosed address. When from is present, selection uses only outputs at that address. The selectable set excludes another account, an outstanding submission of this wallet, and an output that carries a covenant id. A one-address account selects the same outputs in both cases.",
+  "outputs": {
+    "disclosed": {"account": "active", "address": "disclosed", "covenant": false, "outstanding": false},
+    "sameAccountUndisclosed": {"account": "active", "address": "undisclosed", "covenant": false, "outstanding": false},
+    "sameAccountOutstanding": {"account": "active", "address": "undisclosed", "covenant": false, "outstanding": true},
+    "sameAccountCovenant": {"account": "active", "address": "covenant-script", "covenant": true, "outstanding": false},
+    "otherAccount": {"account": "other", "address": "other", "covenant": false, "outstanding": false}
+  },
+  "cases": [
+    {
+      "name": "from-absent",
+      "from": null,
+      "maySelect": ["disclosed", "sameAccountUndisclosed"],
+      "mustNotSelect": ["sameAccountOutstanding", "sameAccountCovenant", "otherAccount"]
+    },
+    {
+      "name": "from-present-disclosed-address",
+      "from": "disclosed",
+      "maySelect": ["disclosed"],
+      "mustNotSelect": ["sameAccountUndisclosed", "sameAccountOutstanding", "sameAccountCovenant", "otherAccount"]
+    },
+    {
+      "name": "from-present-undisclosed-address-of-the-account",
+      "from": "undisclosed",
+      "maySelect": ["sameAccountUndisclosed"],
+      "mustNotSelect": ["disclosed", "sameAccountOutstanding", "sameAccountCovenant", "otherAccount"]
+    },
+    {
+      "name": "from-present-other-account",
+      "from": "other",
+      "code": 4100,
+      "maySelect": [],
+      "mustNotSelect": ["disclosed", "sameAccountUndisclosed", "sameAccountOutstanding", "sameAccountCovenant", "otherAccount"]
+    },
+    {
+      "name": "one-address-account",
+      "accountAddresses": ["disclosed"],
+      "fromAbsentMaySelect": ["disclosed"],
+      "fromPresentMaySelect": ["disclosed"]
+    }
+  ]
+}

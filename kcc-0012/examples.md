@@ -74,7 +74,7 @@ export async function connect(provider: KaspaProvider) {
 
   provider.on("accountsChanged", (next: Address[]) => {
     if (next.length === 0) console.log("disconnected or locked");
-    else console.log("active account is now", next[0]);
+    else console.log("active disclosed address is now", next[0]);
   });
   provider.on("networkChanged", (id: NetworkId) => {
     console.log("network is now", id); // discard cached UTXOs, balances, etc.
@@ -119,6 +119,9 @@ const signed = await provider.request({
   method: "kaspa_signTransaction",
   params: [{ transaction: unsigned, signInputs: [{ index: 1, sighashType: 1 }] }],
 });
+// Input 1 may sit at an address kaspa_accounts did not return, if that
+// address belongs to an authorized account. The call does not add the
+// address to kaspa_accounts. An account the user did not authorize is 4100.
 
 const txid = await provider.request({
   method: "kaspa_sendRawTransaction",
@@ -305,4 +308,76 @@ window.addEventListener("message", (event) => {
 port.onMessage.addListener((msg) => {
   window.postMessage({ channel: "com.example.wallet", ...msg }, window.location.origin);
 });
+```
+
+## 9. App side: reading the account balance
+
+`kaspa_getBalance` is optional and does not prompt. Code `4200` means this wallet has no account total. The app then has the disclosed addresses only. Code `4100` means the origin is not authorized, or the wallet is locked. Neither code is a prompt.
+
+```typescript
+import type { AccountBalance, KaspaProvider, ProviderRpcError } from "./interfaces";
+
+async function readBalance(provider: KaspaProvider): Promise<AccountBalance | null> {
+  try {
+    return await provider.request({ method: "kaspa_getBalance" });
+  } catch (e) {
+    const err = e as ProviderRpcError;
+    if (err.code === 4200) return null; // sum disclosed addresses on a public node
+    if (err.code === 4100) return null; // unauthorized or locked; no prompt
+    if (err.code === -32005) return null; // the wallet rate-limited this origin
+    throw err;
+  }
+}
+```
+
+`kas` is sompi as a decimal string. It follows acceptance on the selected chain. A change of balance does not emit an event. An app that displays it calls the method again. The wallet may answer with `-32005`. `tokens`, when absent, is not a report of zero.
+
+A wallet that implements `kaspa_getBalance` does not add a fresh change address to `kaspa_accounts` merely because the address received change. A wallet that returns `4200` does add it, and emits `accountsChanged`. An app that received `null` above, for code `4200`, keeps summing disclosed addresses, including addresses that arrive through that event.
+
+## 10. App side: asking the wallet to send
+
+Omit `from` to spend the account of the active disclosed address. Pass `from` to spend only that address. A one-address account spends the same outputs either way. The result is the transaction id.
+
+```typescript
+const accountSend = await provider.request({
+  method: "kaspa_sendTransaction",
+  params: [{ outputs: [{ address: payTo, amount: "100000000" }] }],
+});
+
+const oneAddress = await provider.request({
+  method: "kaspa_sendTransaction",
+  params: [{ from: accounts[0], outputs: [{ address: payTo, amount: "100000000" }] }],
+});
+```
+
+`oneAddress` does not spend an undisclosed output of the same account. A covenant output is not an input of either call. The app builds that transaction and uses `kaspa_signInputs` or `kaspa_signTransaction`. If the wallet cannot cover the payment from the outputs it is willing to select, the error is `-32000` and it has no `submitted` member.
+
+## 11. App side: notes and a receive address
+
+Both methods are optional. `kaspa_getNotes` is the permission `kaspa_getNotes`. The first call prompts. The prompt says that the origin will receive every note of the account, including addresses that were not disclosed. If the user approves, later calls do not prompt, until `wallet_revokePermissions` names that permission. The call does not add those addresses to `kaspa_accounts`. `kaspa_requestReceiveAddress` does not prompt. The address it returns becomes disclosed, and it does not become the first element only because it was requested.
+
+```typescript
+import type { Address, Note, ProviderRpcError } from "./interfaces";
+
+let notes: Note[] | null = null;
+try {
+  notes = await provider.request({ method: "kaspa_getNotes" });
+} catch (e) {
+  const err = e as ProviderRpcError;
+  if (err.code === 4200) notes = null; // this wallet has no note list
+  else if (err.code === 4001) notes = null; // user declined the permission
+  else throw err;
+}
+
+const receive: Address = await provider.request({ method: "kaspa_requestReceiveAddress" });
+```
+
+Code `4200` on either call means that method is absent. The other method is unaffected. An app that only needed a total uses `kaspa_getBalance` and does not call `kaspa_getNotes`. A later `kaspa_getNotes` from this origin does not prompt while the permission stands.
+
+On a note whose covenant state the wallet decoded, `tokenAmount` is the token amount and `state` is the decoded state. `redeemScript`, when present, is the P2SH script. The chain does not reveal that script until the note is spent. The app uses these fields to choose the note and to build the transaction it passes to `kaspa_signInputs` or `kaspa_signTransaction`. The fields hold public data: a public key or a key hash at most.
+
+```typescript
+const tokenNote = notes?.find((note) => note.tokenAmount !== undefined);
+// tokenNote?.state is EncodeState. tokenNote?.redeemScript is omitted when
+// the output is not P2SH or the wallet cannot reconstruct the script.
 ```

@@ -1,0 +1,239 @@
+{
+  "kcc": 12,
+  "section": "6.14 kaspa_getBalance",
+  "description": "kas is the sompi sum of the balance set, as a Uint64 string. tokens, when present, sums token amounts in that set, keyed by covenant id and extension commitment. A provider MUST NOT return a JSON number, a non-canonical Uint64, an address, an outpoint, a path, or an extended public key. accept results are results a consumer MUST accept. mustNotReturn results are results a provider MUST NOT produce. In balanceSet, timeLockClear is false when a time lock does not yet allow the spend. That output is not in the set.",
+  "accept": [
+    {
+      "kas": "0"
+    },
+    {
+      "kas": "100000000",
+      "tokens": []
+    },
+    {
+      "kas": "2500",
+      "tokens": [
+        {
+          "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "commitment": "0000000000000000000000000000000000000000000000000000000000000000",
+          "amount": "14"
+        },
+        {
+          "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "commitment": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "kas": "1",
+      "tokens": [
+        {
+          "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "amount": "1"
+        }
+      ]
+    }
+  ],
+  "mustNotReturn": [
+    {
+      "kas": 0
+    },
+    {
+      "kas": "01"
+    },
+    {
+      "kas": "0",
+      "address": "kaspa:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0ju6q2fjpa"
+    },
+    {
+      "kas": "0",
+      "path": "m/44'/111111'/0'/0/0"
+    },
+    {
+      "kas": "0",
+      "xpub": "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8"
+    },
+    {
+      "kas": "0",
+      "tokens": [
+        {
+          "covenantId": "aa",
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "kas": "0",
+      "tokens": [
+        {
+          "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "amount": "01"
+        }
+      ]
+    },
+    {
+      "kas": "0",
+      "tokens": [
+        {
+          "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "kas": "0",
+      "tokens": [
+        {
+          "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "commitment": "0000000000000000000000000000000000000000000000000000000000000000",
+          "amount": "0"
+        }
+      ]
+    }
+  ],
+  "balanceSet": [
+    {
+      "name": "accepted-unspent-movable-mature",
+      "createdAccepted": true,
+      "spentByAccepted": false,
+      "spentByUnaccepted": false,
+      "movableAlone": true,
+      "mature": true,
+      "timeLockClear": true,
+      "disclosedAddress": true,
+      "inBalanceSet": true
+    },
+    {
+      "name": "creating-transaction-only-in-mempool",
+      "createdAccepted": false,
+      "spentByAccepted": false,
+      "spentByUnaccepted": false,
+      "movableAlone": true,
+      "mature": true,
+      "timeLockClear": true,
+      "disclosedAddress": true,
+      "inBalanceSet": false
+    },
+    {
+      "name": "spent-by-accepted-transaction",
+      "createdAccepted": true,
+      "spentByAccepted": true,
+      "spentByUnaccepted": false,
+      "movableAlone": true,
+      "mature": true,
+      "timeLockClear": true,
+      "disclosedAddress": true,
+      "inBalanceSet": false
+    },
+    {
+      "name": "spent-only-by-unaccepted-transaction",
+      "createdAccepted": true,
+      "spentByAccepted": false,
+      "spentByUnaccepted": true,
+      "movableAlone": true,
+      "mature": true,
+      "timeLockClear": true,
+      "disclosedAddress": true,
+      "inBalanceSet": true
+    },
+    {
+      "name": "immature-coinbase",
+      "createdAccepted": true,
+      "spentByAccepted": false,
+      "spentByUnaccepted": false,
+      "movableAlone": true,
+      "mature": false,
+      "timeLockClear": true,
+      "disclosedAddress": true,
+      "inBalanceSet": false
+    },
+    {
+      "name": "time-lock-not-expired",
+      "createdAccepted": true,
+      "spentByAccepted": false,
+      "spentByUnaccepted": false,
+      "movableAlone": true,
+      "mature": true,
+      "timeLockClear": false,
+      "disclosedAddress": true,
+      "inBalanceSet": false
+    },
+    {
+      "name": "undisclosed-address-of-the-same-account",
+      "createdAccepted": true,
+      "spentByAccepted": false,
+      "spentByUnaccepted": false,
+      "movableAlone": true,
+      "mature": true,
+      "timeLockClear": true,
+      "disclosedAddress": false,
+      "inBalanceSet": true
+    },
+    {
+      "name": "needs-another-party",
+      "createdAccepted": true,
+      "spentByAccepted": false,
+      "spentByUnaccepted": false,
+      "movableAlone": false,
+      "mature": true,
+      "timeLockClear": true,
+      "disclosedAddress": false,
+      "inBalanceSet": false
+    },
+    {
+      "name": "reorg-creating-transaction-no-longer-accepted",
+      "createdAccepted": false,
+      "spentByAccepted": false,
+      "spentByUnaccepted": false,
+      "movableAlone": true,
+      "mature": true,
+      "timeLockClear": true,
+      "disclosedAddress": true,
+      "inBalanceSet": false
+    }
+  ],
+  "tokenTotal": {
+    "name": "sum-by-covenant-id-and-commitment",
+    "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+    "outputs": [
+      {
+        "commitment": "0000000000000000000000000000000000000000000000000000000000000000",
+        "tokenAmount": "10",
+        "sompi": "1000",
+        "movableAlone": true
+      },
+      {
+        "commitment": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "tokenAmount": "3",
+        "sompi": "1000",
+        "movableAlone": true
+      },
+      {
+        "commitment": "0000000000000000000000000000000000000000000000000000000000000000",
+        "tokenAmount": "4",
+        "sompi": "500",
+        "movableAlone": true
+      },
+      {
+        "commitment": "0000000000000000000000000000000000000000000000000000000000000000",
+        "tokenAmount": "9",
+        "sompi": "700",
+        "movableAlone": false
+      }
+    ],
+    "kas": "2500",
+    "tokens": [
+      {
+        "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+        "commitment": "0000000000000000000000000000000000000000000000000000000000000000",
+        "amount": "14"
+      },
+      {
+        "covenantId": "1111111111111111111111111111111111111111111111111111111111111111",
+        "commitment": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "amount": "3"
+      }
+    ]
+  }
+}

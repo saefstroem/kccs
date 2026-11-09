@@ -1,0 +1,45 @@
+{
+  "kcc": 12,
+  "section": "1. Definitions, 6.1 kaspa_requestAccounts, 6.2 kaspa_accounts",
+  "description": "kaspa_requestAccounts and kaspa_accounts return a JSON array of address strings: the disclosed addresses. A one-address account is an array of one address. kaspa_accounts may be empty when the origin is unauthorized or the wallet is locked. The result is not an object, and it does not carry an extended public key or a derivation path.",
+  "requestAccounts": {
+    "accept": [
+      [
+        "kaspa:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0ju6q2fjpa"
+      ]
+    ],
+    "reject": [
+      [],
+      "kaspa:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0ju6q2fjpa",
+      [
+        {
+          "address": "kaspa:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0ju6q2fjpa",
+          "path": "m/44'/111111'/0'/0/0"
+        }
+      ],
+      [
+        {
+          "address": "kaspa:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0ju6q2fjpa",
+          "xpub": "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8"
+        }
+      ]
+    ]
+  },
+  "accounts": {
+    "accept": [
+      [],
+      [
+        "kaspa:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0ju6q2fjpa"
+      ]
+    ],
+    "reject": [
+      "kaspa:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0ju6q2fjpa",
+      [
+        {
+          "address": "kaspa:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0ju6q2fjpa",
+          "path": "m/44'/111111'/0'/0/0"
+        }
+      ]
+    ]
+  }
+}

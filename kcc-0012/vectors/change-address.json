@@ -1,0 +1,28 @@
+{
+  "kcc": 12,
+  "section": "6.5 kaspa_sendTransaction",
+  "description": "Change is paid to the same account the inputs came from. A fresh change address is disclosed because it received change only when the provider does not implement kaspa_getBalance. Code 4100 does not mean the method is unimplemented. When the method is implemented, the new output enters kas only once its creating transaction is accepted.",
+  "cases": [
+    {
+      "name": "getBalance-unsupported",
+      "implementsGetBalance": false,
+      "getBalanceCode": 4200,
+      "freshChangeDisclosed": true,
+      "accountsChanged": true
+    },
+    {
+      "name": "getBalance-implemented",
+      "implementsGetBalance": true,
+      "getBalanceCode": null,
+      "freshChangeDisclosed": false,
+      "accountsChanged": false
+    },
+    {
+      "name": "unauthorized-caller-of-an-implemented-method",
+      "implementsGetBalance": true,
+      "getBalanceCode": 4100,
+      "freshChangeDisclosed": false,
+      "accountsChanged": false
+    }
+  ]
+}
